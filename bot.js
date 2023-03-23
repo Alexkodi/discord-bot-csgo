@@ -123,6 +123,19 @@ client.on("messageCreate", (message) => {
 			}
 			break;
 
+		case "q":
+			message.channel.send(app.displayQueue());
+			break;
+
+		case "qa":
+			console.log("bot: " + commandArray[1])
+			app.addToQueue(commandArray[1])
+			break;
+
+		case "qr":
+			app.removeFromQueue(commandArray[2])
+			break;
+
 		default:
 			message.channel.send("Nie rozumiem");
 	}

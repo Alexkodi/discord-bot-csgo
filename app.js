@@ -7,7 +7,7 @@ function read() {
 }
 
 function write(jsonWrite) {
-    const sorted = jsonWrite.sort((a, b) => (a.lvl < b.lvl) ? 1 : -1);
+	const sorted = jsonWrite.sort((a, b) => (a.lvl < b.lvl ? 1 : -1));
 	fs.writeFileSync("./players.json", JSON.stringify(sorted, null, 2));
 	return true;
 }
@@ -15,11 +15,11 @@ function write(jsonWrite) {
 // Display whole database
 function list() {
 	let arrayList = [];
-	read().forEach((element) => {
-		arrayList.push(`[${element.lvl}] *${element.name}*`);
+	read().forEach((element, index) => {
+		arrayList.push(`\`${index}.\` - [${element.lvl}] *${element.name}*`);
 	});
-    arrayList.push(`\n\`Baza zawiera ${arrayList.length} dupeczek\``);
-    const result = arrayList.join('\n')
+	arrayList.push(`\n\`Baza zawiera ${arrayList.length} dupeczek\``);
+	const result = arrayList.join("\n");
 	return result;
 }
 // Display lvl
@@ -92,6 +92,34 @@ function changeLvl(playerName, newLvl) {
 	}
 }
 
+// Queue
+let queue = ['\`Aktualna kolejka:\`'];
+// Display current queue
+function displayQueue() {
+	return queue.join("\n");
+}
+
+function addToQueue(intents) {
+	let player = intents.split("-");
+	const objectArray = read();
+	player.forEach((element) => {
+		const playerIndex = objectArray.findIndex(
+			(i) => i.name.toLowerCase() === element
+		);
+		queue.push(
+			`[${objectArray[playerIndex].lvl}] *${objectArray[playerIndex].name}*`
+		);
+	});
+}
+
+function removeFromQueue() {
+	// kom
+}
+
+function draw() {
+	// kom
+}
+
 module.exports = {
 	list,
 	displayLvl,
@@ -99,4 +127,8 @@ module.exports = {
 	removePlayer,
 	changeName,
 	changeLvl,
+	displayQueue,
+	addToQueue,
+	removeFromQueue,
+	draw,
 };
