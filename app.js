@@ -93,31 +93,34 @@ function changeLvl(playerName, newLvl) {
 }
 
 // Queue
-let queue = ['\`Aktualna kolejka:\`'];
+let queue = [];
 // Display current queue
 function displayQueue() {
-	return queue.join("\n");
+	let arrayQueue = [];
+	read().forEach((element, index) => {
+		arrayQueue.push(`\`${index}.\` - [${element.lvl}] *${element.name}*`);
+	});
+	arrayQueue.push(`\n\`W kolejce jest ${arrayQueue.length} bambików\``);
+	return arrayQueue.join("\n");
 }
 
+// Adding players to queue
 function addToQueue(intents) {
 	let player = intents.split("-");
 	const objectArray = read();
-	player.forEach((element) => {
-		const playerIndex = objectArray.findIndex(
-			(i) => i.name.toLowerCase() === element
-		);
-		queue.push(
-			`[${objectArray[playerIndex].lvl}] *${objectArray[playerIndex].name}*`
-		);
+	player.forEach((element, index) => {
+		queue.push(objectArray[index]);
 	});
 }
 
-function removeFromQueue() {
-	// kom
+// Removing players from queue
+function removeFromQueue(index) {
+	// to do
 }
 
+// Draw teams
 function draw() {
-	// kom
+	// to do
 }
 
 module.exports = {

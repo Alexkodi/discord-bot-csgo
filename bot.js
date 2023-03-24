@@ -127,13 +127,12 @@ client.on("messageCreate", (message) => {
 			message.channel.send(app.displayQueue());
 			break;
 
-		case "qa":
-			console.log("bot: " + commandArray[1])
+		case "qadd":
 			app.addToQueue(commandArray[1])
 			break;
 
 		case "qr":
-			app.removeFromQueue(commandArray[2])
+			app.removeFromQueue(commandArray[1])
 			break;
 
 		default:
