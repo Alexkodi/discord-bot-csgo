@@ -2,7 +2,7 @@
 require("dotenv").config();
 
 // "Back-end" for Bot
-const app = require("./app.js");
+const app = require("./app/engine.js");
 
 // Disocrd.js
 const { Client, Events, GatewayIntentBits, Partials } = require("discord.js");
@@ -36,11 +36,12 @@ client.once(Events.ClientReady, (c) => {
 // Prefix for commands
 const prefix = "cs ";
 
+// Message create listener
 client.on("messageCreate", (message) => {
 	if (message.author.bot) return;
 	if (!message.content.startsWith(prefix)) return;
 
-    // Removing prefix and spliting string
+	// Removing prefix and spliting string
 	const commandMessage = message.content.slice(prefix.length).toLowerCase();
 	const commandArray = commandMessage.split(" ");
 
@@ -52,30 +53,24 @@ client.on("messageCreate", (message) => {
 
 		// Display whole database
 		case "db":
-			message.channel.send(app.list());
+			message.channel.send(app.db());
 			break;
 
 		// Display lvl
-		case "lvl":
+		case "dblvl":
 			message.channel.send(app.displayLvl(commandArray[1]));
 			break;
 
 		// Add player to database
 		case "dbadd":
-            if (commandArray[2] == undefined || null) {
-                message.channel.send("Nie podałeś lvl debilu");
-                return;
-            }
-
-			if (
-				message.member.roles.cache.some((role) => role.name === "CSGO" || "CSGOadmin")
-			) {
-				message.channel.send(
-					app.addPlayer(commandArray[1], commandArray[2])
-				);
-			} else {
-				message.channel.send("Nie masz uprawnien cwaniaczku");
+			if (commandArray[2] == undefined || null) {
+				message.channel.send("Nie podałeś lvl debilu");
+				return;
 			}
+
+			message.channel.send(
+				app.addPlayer(commandArray[1], commandArray[2], message.member.roles.cache)
+			);
 			break;
 
 		// Remove player from database
@@ -106,10 +101,10 @@ client.on("messageCreate", (message) => {
 
 		// Edit player lvl
 		case "dblvl":
-            if (commandArray[2] == undefined || null) {
-                message.channel.send("Nie podałeś lvl debilu");
-                return;
-            }
+			if (commandArray[2] == undefined || null) {
+				message.channel.send("Nie podałeś lvl debilu");
+				return;
+			}
 			if (
 				message.member.roles.cache.some(
 					(role) => role.name === "CSGOadmin"
@@ -128,11 +123,11 @@ client.on("messageCreate", (message) => {
 			break;
 
 		case "qadd":
-			app.addToQueue(commandArray[1])
+			app.addToQueue(commandArray[1]);
 			break;
 
 		case "qr":
-			app.removeFromQueue(commandArray[1])
+			app.removeFromQueue(commandArray[1]);
 			break;
 
 		default:

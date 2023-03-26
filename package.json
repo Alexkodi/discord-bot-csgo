@@ -1,10 +1,11 @@
 {
   "name": "csgo-5v5",
-  "version": "1.0.0",
+  "version": "0.0.9",
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node bot.js",
+    "db-test": "node tests/db-test.js"
   },
   "author": "Alex Zajkowski",
   "license": "ISC",
