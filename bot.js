@@ -46,20 +46,20 @@ client.on("messageCreate", (message) => {
 	const commandArray = commandMessage.split(" ");
 
 	switch (commandArray[0]) {
-		// Help command
-		case "help":
-			message.channel.send(`help`);
+		// Display whole database
+		case "a":
+			console.log(commandArray[1]);
+			message.channel.send(commandArray[1]);
 			break;
 
-		// Display whole database
 		case "db":
-			message.channel.send(app.db());
+			message.channel.send(app.db(commandArray[1]));
 			break;
 
 		// Display lvl
-		case "dblvl":
-			message.channel.send(app.displayLvl(commandArray[1]));
-			break;
+		// case "dblvl":
+		// 	message.channel.send(app.displayLvl(commandArray[1]));
+		// 	break;
 
 		// Add player to database
 		case "dbadd":
@@ -128,6 +128,11 @@ client.on("messageCreate", (message) => {
 
 		case "qr":
 			app.removeFromQueue(commandArray[1]);
+			break;
+
+		// Help command
+		case "help":
+			message.channel.send(`help`);
 			break;
 
 		default:
