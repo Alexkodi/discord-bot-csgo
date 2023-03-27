@@ -2,7 +2,7 @@ const { read, write } = require("./json-handler.js");
 const {
 	checkPermissionCSGOadmin,
 	checkPermissionCSGO,
-} = require("./json-handler.js");
+} = require("./permission.js");
 
 const cmd = require("./db-command.js");
 
@@ -26,37 +26,31 @@ function db(flag) {
 }
 
 // Add player to database
-function addPlayer(playerName, playerLvl, user) {
-	const objectArray = read();
-	objectArray.push({
-		name: playerName,
-		lvl: parseInt(playerLvl),
-	});
-
-	if (write(objectArray)) {
-		return `Dodano \`${playerName}\`a 🫡`;
-	} else {
-		return "Nie udało się, Alex coś popsuł i nie działa";
+function addPlayer(playerName, playerLvl, dcid, user) {
+	if (!checkPermissionCSGO(user)) {return "Nie masz uprawnień"}
+	if (playerName == undefined || null) {
+		return "Gdzie argumenty?"
 	}
+	let onlyID = dcid.replace(/[<>@]/g, "");
+
+	return cmd.addToDatabase(playerName, playerLvl, onlyID)
 }
 
 // Remove player from database
-function removePlayer(playerName) {
-	const objectArray = read();
-	const playerIndex = objectArray.findIndex(
-		(o) => o.name.toLowerCase() === playerName
-	);
-	objectArray.splice(playerIndex, 1);
-
-	if (write(objectArray)) {
-		return `Usunieto \`${playerName}\` 🫡`;
-	} else {
-		return "Nie udało się, Alex coś popsuł i nie działa";
+function removePlayer(playerName, user) {
+	if (!checkPermissionCSGOadmin(user)) {return "Nie masz uprawnień"}
+	if (playerName == undefined || null) {
+		return "Gdzie argumenty?"
 	}
+	return cmd.removeFromDatabase(playerName)
 }
 
 // Edit player name
-function changeName(intent) {
+function changeName(intent, user) {
+	if (!checkPermissionCSGOadmin(user)) {return "Nie masz uprawnień"}
+	if (intent == undefined || null) {
+		return "Gdzie argumenty?"
+	}
 	const objectArray = read();
 	const changesArray = intent.split(">");
 	const playerIndex = objectArray.findIndex(
@@ -72,7 +66,11 @@ function changeName(intent) {
 }
 
 // Edit player lvl
-function changeLvl(playerName, newLvl) {
+function changeLvl(playerName, newLvl, user) {
+	if (!checkPermissionCSGOadmin(user)) {return "Nie masz uprawnień"}
+	if (playerName == undefined || null) {
+		return "Gdzie argumenty?"
+	}
 	const objectArray = read();
 	const playerIndex = objectArray.findIndex(
 		(o) => o.name.toLowerCase() === playerName
@@ -86,7 +84,7 @@ function changeLvl(playerName, newLvl) {
 	}
 }
 
-// Queue
+// Queue ======================================================================
 let queue = [];
 // Display current queue
 function displayQueue() {
@@ -113,7 +111,9 @@ function removeFromQueue(index) {
 }
 
 // Draw teams
-function draw() {}
+function draw() {
+	// asdas
+}
 
 module.exports = {
 	db,

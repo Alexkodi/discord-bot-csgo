@@ -1,4 +1,4 @@
-const { read } = require("./json-handler.js");
+const { read, write } = require("./json-handler.js");
 
 function undefinedAttribute() {
 	let arrayList = [];
@@ -29,10 +29,10 @@ function mentionAttribute(mention) {
 	const objectArray = read();
 	const playerIndex = objectArray.findIndex((o) => o.discordID === onlyID);
 
-    if (playerIndex === -1) {
+	if (playerIndex === -1) {
 		return "Nie ma takiej osoby";
 	} else {
-        return `[${objectArray[playerIndex].lvl}] ${objectArray[playerIndex].name}`;
+		return `[${objectArray[playerIndex].lvl}] ${objectArray[playerIndex].name} \`DiscordID: ${objectArray[playerIndex].discordID}\``;
 	}
 }
 
@@ -45,13 +45,57 @@ function nameAttribute(name) {
 	if (playerIndex === -1) {
 		return "Nie ma takiej osoby";
 	} else {
-		return `[${objectArray[playerIndex].lvl}] ${objectArray[playerIndex].name}`;
+		return `[${objectArray[playerIndex].lvl}] ${objectArray[playerIndex].name} \`DiscordID: ${objectArray[playerIndex].discordID}\``;
 	}
 }
+
+
+// Add Command
+function addToDatabase(playerName, playerLvl, onlyID){
+    const objectArray = read();
+    const playerNM = objectArray.findIndex((o) => o.name.toLowerCase() === playerName);
+    console.log(`${playerNM} : ${playerName}`)
+    const playerID = objectArray.findIndex((o) => o.discordID === onlyID);
+    console.log(`${playerID} : ${onlyID}`)
+    
+    if (playerNM < 0 && playerID < 0) {
+        objectArray.push({
+            name: playerName,
+            lvl: parseInt(playerLvl),
+            discordID: onlyID
+        });
+    } else {
+        return "już jest taka osoba"
+    }
+
+	if (write(objectArray)) {
+		return `Dodano \`${playerName}\`a 🫡`;
+	} else {
+		return "Nie udało się, poproś Aleksa, żeby naprawił";
+	}
+}
+
+// remove Command
+function removeFromDatabase(playerName){
+    const objectArray = read();
+	const playerIndex = objectArray.findIndex(
+		(o) => o.name.toLowerCase() === playerName
+	);
+	objectArray.splice(playerIndex, 1);
+		
+	if (write(objectArray)) {
+		return `Usunieto \`${playerName}\` 🫡`;
+	} else {
+		return "Nie udało się, Alex coś popsuł i nie działa";
+	}
+}
+
 
 module.exports = {
 	undefinedAttribute,
 	levelAttribute,
 	mentionAttribute,
-    nameAttribute
+	nameAttribute,
+    addToDatabase,
+    removeFromDatabase,
 };

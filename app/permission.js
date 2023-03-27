@@ -3,7 +3,7 @@ function checkPermissionCSGOadmin(userRole) {
 }
 
 function checkPermissionCSGO(userRole) {
-	return userRole.some((role) => role.name === "CSGO");
+	return userRole.some((role) => role.name === "CSGO" || "CSGOadmin");
 }
 
 module.exports = {

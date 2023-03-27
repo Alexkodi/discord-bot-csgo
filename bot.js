@@ -53,61 +53,39 @@ client.on("messageCreate", (message) => {
 
 		// Add player to database
 		case "dbadd":
-			if (commandArray[2] == undefined || null) {
-				message.channel.send("Nie podałeś lvl debilu");
-				return;
-			}
-
 			message.channel.send(
-				app.addPlayer(commandArray[1], commandArray[2], message.member.roles.cache)
+				app.addPlayer(
+					commandArray[1],
+					commandArray[2],
+					commandArray[3],
+					message.member.roles.cache
+				)
 			);
 			break;
 
 		// Remove player from database
 		case "dbremove":
-			if (
-				message.member.roles.cache.some(
-					(role) => role.name === "CSGOadmin"
-				)
-			) {
-				message.channel.send(app.removePlayer(commandArray[1]));
-			} else {
-				message.channel.send("Nie masz uprawnien cwaniaczku");
-			}
+			message.channel.send(
+				app.removePlayer(commandArray[1], message.member.roles.cache)
+			);
 			break;
 
 		// Edit player name
 		case "dbname":
-			if (
-				message.member.roles.cache.some(
-					(role) => role.name === "CSGOadmin"
-				)
-			) {
-				message.channel.send(app.changeName(commandArray[1]));
-			} else {
-				message.channel.send("Nie masz uprawnien cwaniaczku");
-			}
+			message.channel.send(
+				app.changeName(commandArray[1], message.member.roles.cache)
+			);
 			break;
 
 		// Edit player lvl
 		case "dblvl":
-			if (commandArray[2] == undefined || null) {
-				message.channel.send("Nie podałeś lvl debilu");
-				return;
-			}
-			if (
-				message.member.roles.cache.some(
-					(role) => role.name === "CSGOadmin"
-				)
-			) {
-				message.channel.send(
-					app.changeLvl(commandArray[1], commandArray[2])
-				);
-			} else {
-				message.channel.send("Nie masz uprawnien cwaniaczku");
-			}
+			message.channel.send(
+				app.changeLvl(commandArray[1], commandArray[2])
+			);
 			break;
 
+
+		// ====================================================================
 		case "q":
 			message.channel.send(app.displayQueue());
 			break;
