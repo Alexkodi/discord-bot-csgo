@@ -4,62 +4,29 @@ const {
 	checkPermissionCSGO,
 } = require("./json-handler.js");
 
+const cmd = require("./db-command.js");
+
 // Display whole database
 function db(flag) {
-	if (flag == undefined || null) {
-		let arrayList = [];
-		read().forEach((element, index) => {
-			arrayList.push(
-				`\`${index}.\` - [${element.lvl}] *${element.name}*`
-			);
-		});
-		arrayList.push(`\n\`Baza zawiera ${arrayList.length} dupeczek\``);
-		const result = arrayList.join("\n");
-		return result;
-	} else if (!isNaN(flag)&& flag.length > 1) {
-		return "Nie wiem co to, ale poziom to cyfra [1 - 9]";
-	} else if (!isNaN(flag) && flag.length === 1) {
-		let list = [];
-		read().forEach((element) => {
-			if (element.lvl == flag) {
-				list.push(`${element.name}`);
-			}
-		});
-		list.push(`\`Ilość młotów [${list.length}] z takim poziomem\``);
-		const result = list.join("\n");
-		return result;
-	} else if (flag.startsWith("<")) {
-		let dcID = flag.replace(/[<>@]/g, "");
-		const objectArray = read();
-		const playerIndex = objectArray.findIndex((o) => o.discordID === dcID);
-		return `[${objectArray[playerIndex].lvl}] ${objectArray[playerIndex].name}`;
-	} else if (/^[a-zA-Z]+$/.test(flag)) {
-		const objectArray = read();
-		const playerIndex = objectArray.findIndex(
-			(o) => o.name.toLowerCase() === flag
-		);
-		if (playerIndex === -1) {
-			return "Nie ma takiej osoby";
-		} else {
-			return `[${objectArray[playerIndex].lvl}] ${objectArray[playerIndex].name}`;
-		}
-	} else {
-		return "Nie rozumiem";
-	}
-}
+	let result = "Nie rozumiem";
 
-// Display lvl
-function displayLvl(playerName) {
-	const objectArray = read();
-	const playerIndex = objectArray.findIndex(
-		(o) => o.name.toLowerCase() === playerName
-	);
-	return `[${objectArray[playerIndex].lvl}] ${objectArray[playerIndex].name}`;
+	if (flag == undefined || null) {
+		result = cmd.undefinedAttribute();
+	} else if (!isNaN(flag)&& flag.length > 1) {
+		result = "Nie wiem co to, ale poziom to cyfra [1 - 9]";
+	} else if (!isNaN(flag) && flag.length === 1) {
+		result = cmd.levelAttribute(flag);
+	} else if (flag.startsWith("<")) {
+		result = cmd.mentionAttribute(flag);
+	} else if (/^[a-zA-Z]+$/.test(flag)) {
+		result = cmd.nameAttribute(flag);
+	}
+
+	return result
 }
 
 // Add player to database
 function addPlayer(playerName, playerLvl, user) {
-	che;
 	const objectArray = read();
 	objectArray.push({
 		name: playerName,
@@ -150,7 +117,6 @@ function draw() {}
 
 module.exports = {
 	db,
-	displayLvl,
 	addPlayer,
 	removePlayer,
 	changeName,

@@ -47,19 +47,9 @@ client.on("messageCreate", (message) => {
 
 	switch (commandArray[0]) {
 		// Display whole database
-		case "a":
-			console.log(commandArray[1]);
-			message.channel.send(commandArray[1]);
-			break;
-
 		case "db":
 			message.channel.send(app.db(commandArray[1]));
 			break;
-
-		// Display lvl
-		// case "dblvl":
-		// 	message.channel.send(app.displayLvl(commandArray[1]));
-		// 	break;
 
 		// Add player to database
 		case "dbadd":
