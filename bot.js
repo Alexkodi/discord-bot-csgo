@@ -88,7 +88,7 @@ client.on("messageCreate", (message) => {
 		// ====================================================================
 		case "q":
 			message.channel.send(app.displayQueue());
-			break;
+			break; 
 
 		case "qa":
 			app.addToQueue(commandArray[1]);
@@ -100,13 +100,17 @@ client.on("messageCreate", (message) => {
 			message.channel.send(app.displayQueue());
 			break;
 
+		case "qf":
+			message.channel.send(app.flushQueue());
+			break;
+
 		case "draw":
 			message.channel.send(app.draw(commandArray[1]));
 			break;
 
 		// Help command
 		case "help":
-			message.channel.send(`help`);
+			message.channel.send(help());
 			break;
 
 		default:

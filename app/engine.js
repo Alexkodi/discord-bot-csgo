@@ -114,6 +114,10 @@ function addToQueue(intents) {
 function removeFromQueue(index) {
 	queue.splice(index, 1)
 }
+function flushQueue() {
+	queue = []
+	return "Pusta";
+}
 
 // Draw teams
 function draw() {
@@ -183,5 +187,6 @@ module.exports = {
 	displayQueue,
 	addToQueue,
 	removeFromQueue,
+	flushQueue,
 	draw,
 };
