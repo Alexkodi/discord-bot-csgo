@@ -90,12 +90,18 @@ client.on("messageCreate", (message) => {
 			message.channel.send(app.displayQueue());
 			break;
 
-		case "qadd":
+		case "qa":
 			app.addToQueue(commandArray[1]);
+			message.channel.send(app.displayQueue());
 			break;
 
 		case "qr":
 			app.removeFromQueue(commandArray[1]);
+			message.channel.send(app.displayQueue());
+			break;
+
+		case "draw":
+			message.channel.send(app.draw(commandArray[1]));
 			break;
 
 		// Help command

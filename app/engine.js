@@ -88,31 +88,90 @@ function changeLvl(playerName, newLvl, user) {
 let queue = [];
 // Display current queue
 function displayQueue() {
-	let arrayQueue = [];
-	read().forEach((element, index) => {
-		arrayQueue.push(`\`${index}.\` - [${element.lvl}] *${element.name}*`);
+	let arrayList =[]
+	queue.forEach((element, index) => {
+		arrayList.push(`\`${index}\` | [${element.lvl}] *${element.name}*`);
 	});
-	arrayQueue.push(`\n\`W kolejce jest ${arrayQueue.length} bambików\``);
-	return arrayQueue.join("\n");
+	arrayList.push(`\n\`W kolejce jest ${arrayList.length} bambików\``);
+
+	return arrayList.join("\n");
 }
 
 // Adding players to queue
 function addToQueue(intents) {
 	let player = intents.split("-");
+	let playerWithoutRepetition  = player.filter((element, index) => {
+		return player.indexOf(element) === index;
+	});
+
 	const objectArray = read();
-	player.forEach((element, index) => {
-		queue.push(objectArray[index]);
+	playerWithoutRepetition.forEach((element, index) => {
+		queue.push(objectArray[element]);
 	});
 }
 
 // Removing players from queue
 function removeFromQueue(index) {
-	// to do
+	queue.splice(index, 1)
 }
 
 // Draw teams
 function draw() {
-	// asdas
+	
+	if (queue.length < 10 ) {
+		return "Za mało osób w kolejce"
+	} else if (queue.length > 10) {
+		return "Za dużo osób w kolejce"
+	}
+
+	function checkArrays(arr1, arr2) {
+		let sum1 = arr1.reduce((a, b) => a + b.lvl, 0);
+		let sum2 = arr2.reduce((a, b) => a + b.lvl, 0);
+		let diff = Math.abs(sum1 - sum2);
+		return diff <= 1;
+	}
+	
+	let found = false;
+	for (let i = 0; i < 2 ** 10; i++) {
+		let array1 = [];
+		let array2 = [];
+		for (let j = 0; j < 10; j++) {
+			if ((i >> j) & 1) {
+				array1.push(queue[j]);
+			} else {
+				array2.push(queue[j]);
+		  	}
+		}
+		if (array1.length == 5 && array2.length == 5 && checkArrays(array1, array2)) {
+		  	found = true;
+			let teamListBlue = [];
+			let teamListRed = [];
+			let s1 = 0;
+			let s2 = 0;
+		  	array1.forEach((element, index) => {
+				teamListBlue.push(`💙 [${element.lvl}] *${element.name}*`);
+				s1+=element.lvl
+			});
+			array2.forEach((element, index) => {
+				teamListRed.push(`❤️ [${element.lvl}] *${element.name}*`);
+				s2+=element.lvl
+			});
+    		let per1 = s1/(s1+s2)*100
+    		let per2 = s2/(s1+s2)*100
+			let stats = [
+				`Niebiescy: ${s1} | ${per1.toFixed(1)}%`,
+				`Czerwoni: ${s2} | ${per2.toFixed(1)}%`,
+				`Numer kombinacji ${i}`
+			]
+
+		  return `${teamListBlue.join('\n')}\n\n${teamListRed.join('\n')}\n\`${stats.join('\n')}\``;
+		//   break;
+		}
+	  }
+	  
+	  if (!found) {
+		return "Nie znaleziono rozwiązania";
+	  }
 }
 
 module.exports = {
