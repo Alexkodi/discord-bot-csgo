@@ -3,6 +3,7 @@ require("dotenv").config();
 
 // "Back-end" for Bot
 const app = require("./app/engine.js");
+const { help } = require("./app/help.js");
 
 // Disocrd.js
 const { Client, Events, GatewayIntentBits, Partials } = require("discord.js");
