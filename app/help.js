@@ -1,6 +1,6 @@
 function help(){
     let result = [
-        `Tutaj znajdziesz co i jak:`,
+        `Tutaj znajdziesz cheatsheet dla całego bota:`,
         `https://alxzjk.com/discordbots/csgo5v5/`,
         `Info:`,
         `\`Wersja: 0.0.94\``,
