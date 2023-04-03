@@ -81,7 +81,7 @@ client.on("messageCreate", (message) => {
 		// Edit player lvl
 		case "dblvl":
 			message.channel.send(
-				app.changeLvl(commandArray[1], commandArray[2])
+				app.changeLvl(commandArray[1], commandArray[2], message.member.roles.cache)
 			);
 			break;
 

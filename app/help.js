@@ -6,7 +6,6 @@ function help(){
         `\`Wersja: 0.0.94\``,
         `\`Komendy: 11\``,
         `\`Kod: 400\``,
-        `\`Autor: Alex Zajkowski\``,
     ]
     return result.join('\n')
 }
